@@ -7,16 +7,16 @@ export interface IGroup {
   name: string;
   items: number;
   time: number;
-  play?: boolean;
+  playing?: boolean;
   background?: string;
   onClick?: any;
 }
-export const Group: React.FC<IGroup> = ({ name, items, time, background, play = false, onClick = () => { } }) => {  
+export const Group: React.FC<IGroup> = ({ name, items, time, background, playing = false, onClick = () => { } }) => {  
 
-  return (<IonItem className={play ? 'play' : ''} onClick={onClick} lines="full">
+  return (<IonItem className={playing ? 'play' : ''} onClick={onClick} lines="full">
     <IonLabel className='ion-text-capitalize'>{name}</IonLabel>
-    <IonLabel slot="end">{time}' - {items} songs</IonLabel>
-    {play ?
+    <IonLabel slot="end">{items} songs</IonLabel>
+    {playing ?
       <IonIcon icon={musicalNotes} slot="end"></IonIcon> :
       <IonIcon icon={chevronForward} slot="end"></IonIcon>}
   </IonItem>)

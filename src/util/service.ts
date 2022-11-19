@@ -11,5 +11,13 @@ export default class Services{
     static async volume(value:number){
         return (await services.get(`/jukebox/volume/${value}`)).data
     }
-    
+    static async pause(){
+        return (await services.get(`/jukebox/pause`)).data
+    }
+    static async continue(){
+        return (await services.get(`/jukebox/play`)).data
+    }
+    static async next(){
+        return (await services.get(`/jukebox/next`)).data
+    }
 }

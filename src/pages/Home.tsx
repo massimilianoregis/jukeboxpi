@@ -14,23 +14,23 @@ const Home: React.FC = () => {
   var [groups,setGroups]=useState<IGroup[]>([])
   const setStatus=(value:string)=>{
     if(!song)return;
-    console.log(value)
+    
     song.status=value;
+    if(value==="play") Services.continue();
+    if(value==="pause") Services.pause();
     setSong(song)    
   }
   var [song,setSong]= useState<ISong|null>(null)
+  
   var [volume,setVolume]=useState<number>(80)
   useEffect(()=>{Services.volume(volume);},[volume])
-  var playGroups=(group:IGroup)=>{        
-    groups.forEach(group=>group.play=false)
-    var gr = groups.find(gr=>gr.name===group.name)
-    if(gr) gr.play=true;      
-    console.log(groups);
-    setGroups(groups.splice(0));
-
+  var playGroups=(group:IGroup)=>{            
     Services.play(group.name);
   }
 
+  const next =()=>{
+    Services.next();
+  }
   const load =()=>{
     Services.info().then(data=>{
       var {info}=data;
@@ -39,14 +39,15 @@ const Home: React.FC = () => {
         author:info.artist,
         status:info.status
       })
+      setVolume(info.volume)
 
       var {playlist}=data;
       setGroups(
-        playlist.map(({name,items}:any)=>({
+        playlist.map(({name,items,playing}:any)=>({
           name:name,
           items:items,
-          time:"unknown",
-          play:false
+          time:"n",
+          playing:playing
         }))
       )
     })
@@ -55,7 +56,7 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>        
-          {song&&<Song title={song.title} author={song.author} status={song.status} onStatus={setStatus}></Song>}
+          {song&&<Song title={song.title} author={song.author} status={song.status} onStatus={setStatus} onNext={next}></Song>}
       </IonHeader>
       <IonContent fullscreen>
         <Groups items={groups} onClick={playGroups}/>
