@@ -1,29 +1,41 @@
 import { IonContent, IonFooter, IonHeader, IonPage } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Home.css';
 import { IGroup } from '../components/Group';
 import { Groups } from '../components/\Groups';
 import { Song,ISong } from '../components/Song';
 import { Volume } from '../components/Volume';
 import Services from '../util/service';
+import { useSay } from '../hooks/useSay';
+
 
 
 const Home: React.FC = () => {  
+  const {say} = useSay();
+
   var timer:any=null;
-  useEffect(()=>{if(timer==null) timer=setInterval(load,2000);},[])  
+  useEffect(()=>{if(timer==null) timer=setInterval(load,2000);},[])    
+
   var [groups,setGroups]=useState<IGroup[]>([])
   const setStatus=(value:string)=>{
     if(!song)return;
     
     song.status=value;
-    if(value==="play") Services.continue();
-    if(value==="pause") Services.pause();
+    if(value==="play") {
+      say(song.title)
+      Services.continue();      
+    }
+    if(value==="pause") {
+      Services.pause();
+      say("pause")
+    }
     setSong(song)    
   }
   var [song,setSong]= useState<ISong|null>(null)
   
   var [volume,setVolume]=useState<number>(80)
-  useEffect(()=>{Services.volume(volume);},[volume])
+  useEffect(()=>{Services.volume(volume);},[volume])  
+  
   var playGroups=(group:IGroup)=>{            
     Services.play(group.name);
   }
@@ -31,7 +43,8 @@ const Home: React.FC = () => {
   const next =()=>{
     Services.next();
   }
-  const load =()=>{
+  const load =()=>{    
+    
     Services.info().then(data=>{
       var {info}=data;
       setSong({
