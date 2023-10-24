@@ -73,12 +73,12 @@ const Home: React.FC = () => {
           {song&&<Song title={song.title} author={song.author} status={song.status} onStatus={setStatus} onNext={next}></Song>}
       </IonHeader>
       <IonContent fullscreen>  
-      <IonRow>
+      <IonRow  className="ion-align-items-center ion-justify-content-center">
         <IonCol size='6'>          
           <Groups items={groups} onClick={playGroups}/>
         </IonCol>
         <IonCol size='6'>          
-          {url&&<QRCode value={url} />}
+          {url&&<QRCode value={url} size={180}/>}
         </IonCol>
       </IonRow>      
       </IonContent>
