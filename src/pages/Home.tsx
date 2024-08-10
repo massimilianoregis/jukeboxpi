@@ -78,7 +78,7 @@ const Home: React.FC = () => {
           <Groups items={groups} onClick={playGroups}/>
         </IonCol>
         <IonCol size='6'>          
-          {url&&<QRCode value={url} size={180}/>}
+          {url&&<QRCode value={url} size={90}/>}
         </IonCol>
       </IonRow>      
       </IonContent>
